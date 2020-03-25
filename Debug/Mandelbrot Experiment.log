@@ -1,0 +1,9 @@
+﻿  Mandelbrot ExperimentDlg.cpp
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(19,1): warning C4005: '_AFXDLL': macro redefinition
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\pch.cpp : message : see previous definition of '_AFXDLL'
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(119,2): warning C4002: too many arguments for function-like macro invocation 'ON_WM_MOUSEMOVE'
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(121,2): warning C4002: too many arguments for function-like macro invocation 'ON_WM_LBUTTONDBLCLK'
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(326,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(659): warning C4717: 'brightland::CMandelbrotExperimentDlg::OnLButtonDown': recursive on all control paths, function will cause runtime stack overflow
+C:\Users\Dubs\source\repos\Mandelbrot Experiment\Mandelbrot ExperimentDlg.cpp(633): warning C4715: 'brightland::CMandelbrotExperimentDlg::compileMandelbrot': not all control paths return a value
+  Mandelbrot Experiment.vcxproj -> C:\Users\Dubs\source\repos\Mandelbrot Experiment\Debug\Mandelbrot Experiment.exe
