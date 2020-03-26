@@ -1,0 +1,27 @@
+﻿  pch.cpp
+  Bitmap.cpp
+  CStaticSub.cpp
+  Fractal.cpp
+  FractalCreator.cpp
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\FractalCreator.cpp(29,37): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\FractalCreator.cpp(185,40): warning C4244: '=': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\FractalCreator.cpp(186,42): warning C4244: '=': conversion from 'double' to 'uint8_t', possible loss of data
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\FractalCreator.cpp(187,41): warning C4244: '=': conversion from 'double' to 'uint8_t', possible loss of data
+  Mandelbrot Experiment.cpp
+  Mandelbrot ExperimentDlg.cpp
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\Mandelbrot ExperimentDlg.cpp(19,1): warning C4005: '_AFXDLL': macro redefinition
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\pch.cpp : message : see previous definition of '_AFXDLL'
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\Mandelbrot ExperimentDlg.cpp(119,2): warning C4002: too many arguments for function-like macro invocation 'ON_WM_MOUSEMOVE'
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\Mandelbrot ExperimentDlg.cpp(121,2): warning C4002: too many arguments for function-like macro invocation 'ON_WM_LBUTTONDBLCLK'
+  Mandelbrot.cpp
+  messenger.cpp
+  RGBb.cpp
+  ZoomList.cpp
+  Generating Code...
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\Mandelbrot ExperimentDlg.cpp(659): warning C4717: 'brightland::CMandelbrotExperimentDlg::OnLButtonDown': recursive on all control paths, function will cause runtime stack overflow
+C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\Mandelbrot ExperimentDlg.cpp(633): warning C4715: 'brightland::CMandelbrotExperimentDlg::compileMandelbrot': not all control paths return a value
+  Mandelbrot Experiment.vcxproj -> C:\Users\Dubs\source\repos\mr-tea79\mandelbrot\x64\Debug\Mandelbrot Experiment.exe
