@@ -1,5 +1,6 @@
 
 // Mandelbrot ExperimentDlg.cpp : implementation file
+//Last update was on 26th of March 2020
 //
 
 #include "pch.h"
@@ -182,6 +183,12 @@ BOOL CMandelbrotExperimentDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT16, m_output);
 	m_output = "304";
 	SetDlgItemText(IDC_EDIT17, m_output);
+
+	m_output = "1.0";
+	SetDlgItemText(IDC_EDIT18, m_output);
+
+	m_output = "1.0";
+	SetDlgItemText(IDC_EDIT19, m_output);
 
 	// Add "About..." menu item to system menu.
 
@@ -506,6 +513,13 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 		return 0;
 	}
 
+	CString magnification1;
+	pObject->GetDlgItemText(IDC_EDIT18, magnification1);
+	CString magnification2;
+	pObject->GetDlgItemTextW(IDC_EDIT19, magnification2);
+	
+	double mag1 = _tstof(magnification1);
+	double mag2 = _tstof(magnification2);
 	
 	CString zoomint1;
 	pObject->GetDlgItemText(IDC_EDIT14, zoomint1);
@@ -548,8 +562,8 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 		m_fractalCreator.addRange(1.0, RGBb(red4d, green4d, blue4d));
 
 
-		m_fractalCreator.addZoom(Zoom(zoom1int1, zoom1int2, 0.1));
-		m_fractalCreator.addZoom(Zoom(zoom2int1, zoom2int2, 0.1));
+		m_fractalCreator.addZoom(Zoom(zoom1int1, zoom1int2, mag1));
+		m_fractalCreator.addZoom(Zoom(zoom2int1, zoom2int2, mag2));
 
 		//Get file path and fix it with extra slashes etc..
 		CString cpath;
