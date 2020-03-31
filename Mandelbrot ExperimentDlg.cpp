@@ -536,7 +536,7 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 				okbtn->EnableWindow(TRUE);
 		}
 	}
-		else {
+	else {
 			m_fractalCreator.run(path);			
 			stopNow = TRUE;
 			//Stop the application Thread.
@@ -555,7 +555,7 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 			return 0;
 
 
-		}	
+	}	
 }
 
 
