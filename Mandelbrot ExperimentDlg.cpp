@@ -53,32 +53,22 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_console;
-
 	CString m_output;
 	CString text1;
-	
-
-	CString red_value;
-	
-	CEdit r_edit1;
-
-
+//	CString red_value;	
+//	CEdit r_edit1;
 };
 
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
 , m_console(_T(""))
 , text1(_T(""))
-
-
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
-
-	
+	CDialogEx::DoDataExchange(pDX);	
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
@@ -86,28 +76,21 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
-
 // CMandelbrotExperimentDlg dialog
-
-
 
 CMandelbrotExperimentDlg::CMandelbrotExperimentDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MANDELBROTEXPERIMENT_DIALOG, pParent)
 	, m_output(_T(""))
-	, red_value(_T(""))
-{
-	
+//	, red_value(_T(""))
+{	
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CMandelbrotExperimentDlg::DoDataExchange(CDataExchange* pDX)
 {
-
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_OUTPUT, m_output);
-	DDX_Control(pDX, IDC_BMP, m_pic);
-	
-	
+	DDX_Control(pDX, IDC_BMP, m_pic);	
 }
 
 BEGIN_MESSAGE_MAP(CMandelbrotExperimentDlg, CDialogEx)
@@ -116,11 +99,9 @@ BEGIN_MESSAGE_MAP(CMandelbrotExperimentDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BTNCOMPILE, &CMandelbrotExperimentDlg::OnBnClickedBtnCompile) //Start Monitoring Button
 	//ON_BN_CLICKED(IDC_BUTTON1, &CMandelbrotExperimentDlg::OnBnClickedBtnTest) //Start Monitoring Button
-
 	ON_WM_MOUSEMOVE(OnMouseMove)
 	//ON_WM_MBUTTONDBLCLK(OnMButtonDblClk)
 	ON_WM_LBUTTONDBLCLK(OnLButtonDblClk)
-
 
 END_MESSAGE_MAP()
 
@@ -131,8 +112,7 @@ BOOL CMandelbrotExperimentDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	
-	LPCTSTR str = _T("test.bmp");
-
+	//LPCTSTR str = _T("test.bmp");
 
 	//This adds the minimize and close controls to the dialog box.
 	ModifyStyle(0, WS_MINIMIZEBOX, TRUE);
@@ -184,6 +164,7 @@ BOOL CMandelbrotExperimentDlg::OnInitDialog()
 	m_output = "304";
 	SetDlgItemText(IDC_EDIT17, m_output);
 
+	//Set Magnification
 	m_output = "1.0";
 	SetDlgItemText(IDC_EDIT18, m_output);
 
@@ -191,7 +172,6 @@ BOOL CMandelbrotExperimentDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT19, m_output);
 
 	// Add "About..." menu item to system menu.
-
 	// IDM_ABOUTBOX must be in the system command range.
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -247,7 +227,6 @@ void CMandelbrotExperimentDlg::ChangeStaticCtrl(LPCTSTR lpszImagePath, // path t
 		bmp.Attach(hBitmap); // attach new image to it
 		CStatic* pCtrl = (CStatic*)GetDlgItem(nCtrlID);
 		pCtrl->SetBitmap((HBITMAP)bmp);
-	//	pCtrl - &gt;SetBitmap((HBITMAP)bmp);
 	}
 }
 
@@ -257,12 +236,11 @@ void CMandelbrotExperimentDlg::OnTimer(UINT_PTR nIDEvent) {
 	// TODO: Add your message handler code here and/or call default
 
 	//m_ctrlStatus.SetWindowText(sStatusMsg);
-
-	
 	CDialogEx::OnTimer(nIDEvent);
 	UpdateData(FALSE);
 }
 
+//Just for testing
 void CMandelbrotExperimentDlg::OnBnClickedBtnTest() {
 	stopNow = 1;
 	m_output = "test";
@@ -270,13 +248,11 @@ void CMandelbrotExperimentDlg::OnBnClickedBtnTest() {
 	UpdateData(false);
 }
 
+//This updates the image with the preview.
 void CMandelbrotExperimentDlg::updateImage(LPCTSTR str) {
-
 
 	CImage img1;
 	int dimx = 400, dimy = 300;
-	//img1.Load("test.bmp");
-//	LPCTSTR str1 = _T("c:\\temp\\test.bmp");
 	
 	img1.Load((LPCTSTR)(str));
 	//filename = path on local system to the bitmap
@@ -294,46 +270,41 @@ void CMandelbrotExperimentDlg::updateImage(LPCTSTR str) {
 
 	m_pic.SetBitmap((HBITMAP)b.Detach());
 	ReleaseDC(screenDC);
-
-
 }
 
+//This creates a new thread to allow the GUI to still function.
 void CMandelbrotExperimentDlg::OnBnClickedBtnCompile()
 {
-
-
-	
-
 	//Disable button to prevent multiple threads being started (Crash might occur).
 	CWnd* okbtn = GetDlgItem(IDC_BTNCOMPILE);
 	if (okbtn) {
 		okbtn->EnableWindow(FALSE);
 	}
-
+	//Begin the new thread.
 	stopNow = 0;
 	SetTimer(1234, 333, 0); // 3 times per second
 	
 	m_output = "Bulding Fractal, please wait..";
 	
 	AfxBeginThread(compileMandelbrot, this);
-	UpdateData(false);
-	
+	UpdateData(false);	
 }
+
+//Notifies the user that the mandelbrot has finished compiling.
 int CMandelbrotExperimentDlg::finishUp() {
 
 	string output = "Fractal Completed!";
 	messenger(output);
-	
 
 	return 0;
 }
 
+//This is used to check if the fields contain a number.
 bool CMandelbrotExperimentDlg::isNumber(string s)
 {
 	for (int i = 0; i < s.length(); i++) {
 		if (isdigit(s[i]) == false && s[i] != '.')
 			return false;	
-
 	}
 
 	int b = atoi(s.c_str());  //Convert to integer and test if it is greater than 255 or less than 0
@@ -346,14 +317,7 @@ bool CMandelbrotExperimentDlg::isNumber(string s)
 	return true;
 }
 
-BOOL DirectoryExists(const char* dirName) {
-	DWORD attribs = ::GetFileAttributesA(dirName);
-	if (attribs == INVALID_FILE_ATTRIBUTES) {
-		return false;
-	}
-	return (attribs & FILE_ATTRIBUTE_DIRECTORY);
-}
-
+//This is where the mandelbrot is compiled.
 UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 
 	CMandelbrotExperimentDlg* pObject = (CMandelbrotExperimentDlg*)pParam;
@@ -361,6 +325,7 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	//Set hue values
 	CString red1;
 	
+	//Get the values from the textboxes and convert them into required format.
 	pObject->GetDlgItemText(IDC_EDIT2, red1);
 
 	std::string r1 = std::string(CStringA(red1));
@@ -413,13 +378,13 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 
 	CString green4;
 	pObject->GetDlgItemText(IDC_EDIT12, green4);
-	std::string g4 = std::string(CStringA(green4));
-	
+	std::string g4 = std::string(CStringA(green4));	
 	double green4d = _ttoi(green4);
 
 	CString blue4;
 	pObject->GetDlgItemText(IDC_EDIT13, blue4);
 	std::string b4 = std::string(CStringA(blue4));
+	double blue4d = _ttoi(blue4);
 
 	//Zoom Coordinates
 	CString zoom1s1;
@@ -441,26 +406,8 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	pObject->GetDlgItemText(IDC_EDIT17, zoom2s2);
 	int zoom2int2 = _ttoi(zoom2s2);
 	std::string z2int2 = std::string(CStringA(zoom2s2));
-	
 
-
-	//pObject->SetDlgItemText(IDC_OUTPUT, message);
-	double blue4d = _ttoi(blue4);
-/*
-	if (pObject->isNumber(z1int) == false || pObject->isNumber(z1int2) == false) {
-		pObject->m_output = "Not valid coordiantes!";
-		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-		CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
-		if (okbtn) {
-			okbtn->EnableWindow(TRUE);
-		}
-		stopNow = TRUE;
-		//Stop the application Thread.
-		pObject->KillTimer(1234);
-		return 0;
-	}
-	*/
-
+	//Validation
 	if (pObject->isNumber(b4) == false || pObject->isNumber(g4) == false || pObject->isNumber(r1) == false) {
 		pObject->m_output = "You need to enter a valid number between 0 - 255 !";
 		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
@@ -529,19 +476,16 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	pObject->GetDlgItemText(IDC_EDIT16, zoomint3);
 	CString zoomint4;
 	pObject->GetDlgItemText(IDC_EDIT17, zoomint4);
-	if (zoomint1 != "295" && zoomint2 !="202") {
-		//zoom1int1 = zoom1int1 * 2.6;
-		
+	
+	if (zoomint1 != "295" && zoomint2 !="202") {			
 		//Convert int to CString!
 		std::string outputString = std::to_string(zoom1int1);
 		CString cstr(outputString.c_str());
 		
-		pObject->m_output = cstr;
-		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
+		//pObject->m_output = cstr;
+		//pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
 	}
 	if (zoomint3 != "312" && zoomint4 != "304") {
-		//zoom1int2 = zoom1int2 * 1.6;
-
 		//Convert int to CString!
 		std::string outputString = std::to_string(zoom1int2);
 		CString cstr(outputString.c_str());
@@ -551,66 +495,54 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	}
 	
 
-		//pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
+	FractalCreator m_fractalCreator(800, 600);
 
-		FractalCreator m_fractalCreator(800, 600);
+	//Need error checking on GUI min and max range 0.0 - 1.0
+	m_fractalCreator.addRange(0.0, RGBb(red1d, green1d, blue1d));
+	m_fractalCreator.addRange(0.3, RGBb(red2d, green2d, blue2d));
+	m_fractalCreator.addRange(0.5, RGBb(red3d, green3d, blue3d));
+	m_fractalCreator.addRange(1.0, RGBb(red4d, green4d, blue4d));
 
-		//Need error checking on GUI min and max range 0.0 - 1.0
-		m_fractalCreator.addRange(0.0, RGBb(red1d, green1d, blue1d));
-		m_fractalCreator.addRange(0.3, RGBb(red2d, green2d, blue2d));
-		m_fractalCreator.addRange(0.5, RGBb(red3d, green3d, blue3d));
-		m_fractalCreator.addRange(1.0, RGBb(red4d, green4d, blue4d));
+	m_fractalCreator.addZoom(Zoom(zoom1int1, zoom1int2, mag1));
+	m_fractalCreator.addZoom(Zoom(zoom2int1, zoom2int2, mag2));
 
-
-		m_fractalCreator.addZoom(Zoom(zoom1int1, zoom1int2, mag1));
-		m_fractalCreator.addZoom(Zoom(zoom2int1, zoom2int2, mag2));
-
-		//Get file path and fix it with extra slashes etc..
-		CString cpath;
-		pObject->GetDlgItemText(IDC_EDIT1, cpath);
-		std::string path = std::string(CStringA(cpath));
-		if (path == "") {
+	//Get file path and fix it with extra slashes etc..
+	CString cpath;
+	pObject->GetDlgItemText(IDC_EDIT1, cpath);
+	std::string path = std::string(CStringA(cpath));
+	if (path == "") {
 			path = "fractal.bmp";
-		}
-		else {
-
+	}
+	else {
 			for (auto pos = path.find('\\'); pos != string::npos; pos = path.find('\\', ++pos))
 				path.insert(++pos, 1, '\\');
 
 			path.append("\\Fractal.bmp");
-		}
+	}
 
-		//Make filepath for LPCTSTR
-		CA2T lpath(path.c_str());
-		LPCTSTR str = lpath;
+	//Make filepath for LPCTSTR
+	CA2T lpath(path.c_str());
+	LPCTSTR str = lpath;
 
-		//Not working!
-
-		if (GetFileAttributes(lpath) == INVALID_FILE_ATTRIBUTES) {
-			//CreateDirectory(newPath, NULL); NOT WORKING
-			pObject->m_output = "Directory Doesn't exist! Please check your path.";
-			pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-			stopNow = TRUE;
-			//Stop the application Thread.
-			pObject->KillTimer(1234);
+	if (GetFileAttributes(lpath) == INVALID_FILE_ATTRIBUTES) {
+		pObject->m_output = "Directory Doesn't exist! Please check your path.";
+		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
+		stopNow = TRUE;
+		//Stop the application Thread.
+		pObject->KillTimer(1234);
 			
-			CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
-			if (okbtn) {
+		CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
+		if (okbtn) {
 				okbtn->EnableWindow(TRUE);
-			}
 		}
+	}
 		else {
-			m_fractalCreator.run(path);
-
-
+			m_fractalCreator.run(path);			
 			stopNow = TRUE;
 			//Stop the application Thread.
 			pObject->KillTimer(1234);
-
 			pObject->m_output = "Fractal Completed!";
 			pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-
-
 			pObject->ChangeStaticCtrl(str, IDC_BMP);
 
 			CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
@@ -618,61 +550,13 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 				okbtn->EnableWindow(TRUE);
 			}
 
-
-			//LPCTSTR imagePath = lpath;	
-
-			//LPCTSTR imagePath = _T("test.bmp");
 			pObject->updateImage(str);
-
-
 
 			return 0;
 
 
-		}
-
-	/*	const char* c = path.c_str();
-		bool result = DirectoryExists(c);
-		if (result == true) {
-			pObject->m_output = "Exists";
-			pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-		}
-		else {
-			pObject->m_output = "Doesn't exist";
-			pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-		}
-		*/
-			
-	
+		}	
 }
-
-//Trying to detect left mouse clicks.. 
-
-
-
-
-void CMandelbrotExperimentDlg::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-
-	CRect rect;
-	CStaticSubclass css;
-	css.m_Picture;
-
-	css.m_Picture.GetWindowRect(&rect);
-	ScreenToClient(&rect);
-	if (rect.PtInRect(point))
-	{
-	
-		// Do something
-	}
-
-	
-
-	CMandelbrotExperimentDlg::OnLButtonDown(nFlags, point);
-}
-
-
 
 
 // If you add a minimize button to your dialog, you will need the code below
@@ -711,14 +595,9 @@ HCURSOR CMandelbrotExperimentDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
-//Hover handler
-
+//Hover handler to display coordinates when moving the mouse over the preview image.
 void brightland::CMandelbrotExperimentDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
-	
-
 	//Get the Picture Control's Rect To check
 	CRect rect;
 	m_pic.GetWindowRect(rect);
@@ -738,12 +617,9 @@ void brightland::CMandelbrotExperimentDlg::OnMouseMove(UINT nFlags, CPoint point
 	CDialog::OnMouseMove(nFlags, point);
 }
 
-//Click Handler
-
+//Click Handler for when the user double clicks within the preview window.
 void brightland::CMandelbrotExperimentDlg::OnMButtonDblClk(UINT nFlags, CPoint point)
 {
-
-
 	//Get the Picture Control's Rect To check
 	CRect rect;
 	m_pic.GetWindowRect(rect);
@@ -762,14 +638,12 @@ void brightland::CMandelbrotExperimentDlg::OnMButtonDblClk(UINT nFlags, CPoint p
 		m_pic.SendMessage(WM_MBUTTONDBLCLK, 0, lp);
 	}
 
-	CDialog::OnMButtonDblClk(nFlags, point);
-	
+	//Do it again!
+	CDialog::OnMButtonDblClk(nFlags, point);	
 }
 
 void brightland::CMandelbrotExperimentDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-
-
 	//Get the Picture Control's Rect To check
 	CRect rect;
 	m_pic.GetWindowRect(rect);
@@ -789,5 +663,4 @@ void brightland::CMandelbrotExperimentDlg::OnLButtonDblClk(UINT nFlags, CPoint p
 	}
 
 	CDialog::OnLButtonDblClk(nFlags, point);
-
 }
