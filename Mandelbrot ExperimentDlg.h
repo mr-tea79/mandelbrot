@@ -45,6 +45,8 @@ public:
 	afx_msg void OnBnClickedBtnTest();
 	int finishUp();
 	bool isNumber(std::string s);
+	bool isNumberM(std::string s);
+	bool isNumberC(std::string s);
 	void OnTimer(UINT_PTR nIDEvent); //Thread Manager.
 	void messenger(std::string s);
 	static UINT compileMandelbrot(LPVOID pParam);

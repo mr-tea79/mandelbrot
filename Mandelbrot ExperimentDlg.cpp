@@ -317,6 +317,42 @@ bool CMandelbrotExperimentDlg::isNumber(string s)
 	return true;
 }
 
+//This is used to validate magnification settings.
+bool CMandelbrotExperimentDlg::isNumberM(string s)
+{
+	for (int i = 0; i < s.length(); i++) {
+		if (isdigit(s[i]) == false && s[i] != '.')
+			return false;
+	}
+
+	int b = atoi(s.c_str());  //Convert to integer and test if it is greater than 10 or less than 0
+	if (b > 10 || b < 0)
+		return false;
+
+	if (s == "")
+		return false;
+
+	return true;
+}
+
+//This is used to ensure coordinates are valid numbers.
+bool CMandelbrotExperimentDlg::isNumberC(string s)
+{
+	for (int i = 0; i < s.length(); i++) {
+		if (isdigit(s[i]) == false && s[i] != '.')
+			return false;
+	}
+
+	int b = atoi(s.c_str());  //Convert to integer and test if it is greater than 400 or less than 0
+	if (b > 400 || b < 0)
+		return false;
+
+	if (s == "")
+		return false;
+
+	return true;
+}
+
 //This is where the mandelbrot is compiled.
 UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 
@@ -407,6 +443,21 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	int zoom2int2 = _ttoi(zoom2s2);
 	std::string z2int2 = std::string(CStringA(zoom2s2));
 
+
+
+	if (pObject->isNumberC(z1int) == false || pObject->isNumberC(z1int2) == false || pObject->isNumberC(z2int) == false || pObject->isNumberC(z2int2) == false) {
+		pObject->m_output = "You need to enter a valid number between 0 - 400 !";
+		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
+		CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
+		if (okbtn) {
+			okbtn->EnableWindow(TRUE);
+		}
+		stopNow = TRUE;
+		//Stop the application Thread.
+		pObject->KillTimer(1234);
+		return 0;
+	}
+
 	//Validation
 	if (pObject->isNumber(b4) == false || pObject->isNumber(g4) == false || pObject->isNumber(r1) == false) {
 		pObject->m_output = "You need to enter a valid number between 0 - 255 !";
@@ -467,6 +518,23 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	
 	double mag1 = _tstof(magnification1);
 	double mag2 = _tstof(magnification2);
+	std::string m1int = std::string(CStringA(magnification1));
+	std::string m2int = std::string(CStringA(magnification2));
+
+
+	if (pObject->isNumberM(m1int) == false || pObject->isNumberM(m2int) == false) {
+		pObject->m_output = "You need to enter a valid number between 0 - 11 !";
+		pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
+		CWnd* okbtn = pObject->GetDlgItem(IDC_BTNCOMPILE);
+		if (okbtn) {
+			okbtn->EnableWindow(TRUE);
+		}
+		stopNow = TRUE;
+		//Stop the application Thread.
+		pObject->KillTimer(1234);
+		return 0;
+	}
+
 	
 	CString zoomint1;
 	pObject->GetDlgItemText(IDC_EDIT14, zoomint1);
@@ -477,23 +545,16 @@ UINT CMandelbrotExperimentDlg::compileMandelbrot(LPVOID pParam) {
 	CString zoomint4;
 	pObject->GetDlgItemText(IDC_EDIT17, zoomint4);
 	
-	if (zoomint1 != "295" && zoomint2 !="202") {			
+	//if (zoomint1 != "295" && zoomint2 !="202") {			
 		//Convert int to CString!
 		std::string outputString = std::to_string(zoom1int1);
-		CString cstr(outputString.c_str());
-		
-		//pObject->m_output = cstr;
-		//pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-	}
-	if (zoomint3 != "312" && zoomint4 != "304") {
-		//Convert int to CString!
-		std::string outputString = std::to_string(zoom1int2);
-		CString cstr(outputString.c_str());
-
-		//pObject->m_output = cstr;
-		//pObject->SetDlgItemText(IDC_OUTPUT, pObject->m_output);
-	}
+		//CString cstr(outputString.c_str());
 	
+
+	//}
+	
+
+
 
 	FractalCreator m_fractalCreator(800, 600);
 
